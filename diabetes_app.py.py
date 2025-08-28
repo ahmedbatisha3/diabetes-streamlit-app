@@ -80,3 +80,46 @@ if uploaded_file is not None:
 
 else:
     st.info("Please upload your dataset CSV file to start analysis")
+
+st.subheader("🔮 Predict Patient Status (Manual Input)")
+
+with st.form("prediction_form"):
+    age = st.number_input("Age", min_value=1, max_value=120, value=30)
+    urea = st.number_input("Urea", value=25.0)
+    cr = st.number_input("Cr", value=1.0)
+    hba1c = st.number_input("HbA1c", value=5.5)
+    chol = st.number_input("Cholesterol", value=180.0)
+    tg = st.number_input("Triglycerides (TG)", value=150.0)
+    hdl = st.number_input("HDL", value=45.0)
+    ldl = st.number_input("LDL", value=100.0)
+    vldl = st.number_input("VLDL", value=30.0)
+    bmi = st.number_input("BMI", value=25.0)
+
+    gender = st.selectbox("Gender", ["M", "F"])
+
+    submitted = st.form_submit_button("Predict")
+
+if submitted:
+    input_data = pd.DataFrame({
+        "AGE": [age],
+        "Urea": [urea],
+        "Cr": [cr],
+        "HbA1c": [hba1c],
+        "Chol": [chol],
+        "TG": [tg],
+        "HDL": [hdl],
+        "LDL": [ldl],
+        "VLDL": [vldl],
+        "BMI": [bmi],
+        "Gender": [1 if gender=="M" else 0]
+    })
+
+    input_data.loc[:, sss] = scaler.transform(input_data[sss])
+
+    prediction = model.predict(input_data)[0]
+
+    if prediction == 0:
+        st.success("✅ The model predicts: Normal")
+    else:
+        st.error("⚠️ The model predicts: Patient")
+
