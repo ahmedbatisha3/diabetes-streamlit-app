@@ -100,6 +100,7 @@ with st.form("prediction_form"):
     submitted = st.form_submit_button("Predict")
 
 if submitted:
+    # تجهيز الداتا
     input_data = pd.DataFrame({
         "AGE": [age],
         "Urea": [urea],
@@ -114,12 +115,18 @@ if submitted:
         "Gender": [1 if gender=="M" else 0]
     })
 
+    # إعادة ترتيب الأعمدة لتطابق تدريب الموديل
+    input_data = input_data[X_train.columns]
+
+    # Scale numerical features
     input_data.loc[:, sss] = scaler.transform(input_data[sss])
 
+    # عمل التنبؤ
     prediction = model.predict(input_data)[0]
 
     if prediction == 0:
         st.success("✅ The model predicts: Normal")
     else:
         st.error("⚠️ The model predicts: Patient")
+
 
