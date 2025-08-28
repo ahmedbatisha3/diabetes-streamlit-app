@@ -83,7 +83,7 @@ if uploaded_file is not None:
     st.text("Classification Report")
     st.text(classification_report(y_test, y_pred, target_names=le_target.classes_))
 
-    st.subheader("🔮 Predict Patient Status (Manual Input)")
+    st.subheader("Predict Patient Status (Manual Input)")
 
     with st.form("prediction_form"):
         age = st.number_input("Age", min_value=1, max_value=120, value=30)
@@ -129,3 +129,4 @@ if uploaded_file is not None:
 
 else:
     st.info("Please upload your dataset CSV file to start analysis")
+
